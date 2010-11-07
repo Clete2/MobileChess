@@ -21,7 +21,6 @@ public class PieceList {
 				pieces[i][j] = new Piece(PieceColor.NONE, PieceType.EMPTY);
 			}
 		}
-
 		moveParse = new MoveParser();
 	}
 
@@ -99,7 +98,7 @@ public class PieceList {
 		short[] newLocation;
 		try {
 			newLocation = getPieceLocation(pieceToWatch);
-			movePiece(newLocation[0], newLocation[1], pieceSelected, new Player()); // TODO Change from new Player
+			movePiece(newLocation[0], newLocation[1], pieceSelected, null); // TODO Change from new Player
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
