@@ -2,7 +2,8 @@ package shared;
 
 
 public class Game {
-	Board theBoard;
+	private Board theBoard;
+	private int gameCounter;
 	
 	public Game() {
 		setupGame();
@@ -10,11 +11,18 @@ public class Game {
 	
 	private void setupGame() {
 		theBoard = new Board();
-		Player whitePlayer = new Player(PieceColor.WHITE);
-		Player blackPlayer = new Player(PieceColor.BLACK);
+		gameCounter = 0;
 	}
 	
 	public Board getBoard() {
 		return theBoard;
+	}
+	
+	public void incrementGameCounter() {
+		gameCounter++;
+	}
+	
+	public int getGameCounter() {
+		return gameCounter;
 	}
 }

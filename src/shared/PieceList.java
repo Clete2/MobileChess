@@ -37,18 +37,18 @@ public class PieceList {
 		return pieces[row + (8 * col)];
 	}
 
-	public void movePiece(short newRow, short newCol, Piece pieceToMove, Player playerMoving) throws Exception {
+	public void movePiece(short newRow, short newCol, Piece pieceToMove, Game theGame) throws Exception {
 		// TODO Make sure that it is that player's turn.
 
-		short[] oldLocation = getPieceLocation(pieceToMove);
-
-		if(!moveParse.isMoveValid(newRow, newCol, pieceToMove, playerMoving)) {
+		if(!moveParse.isMoveValid(newRow, newCol, pieceToMove)) {
 			throw InvalidMoveException;
 		}
-
+		
+		short[] oldLocation = getPieceLocation(pieceToMove);
 		updatePiece(oldLocation[0], oldLocation[1], newRow, newCol, pieceToMove);
 		pieces[oldLocation[0] + (8 * oldLocation[1])] = new Piece(PieceColor.NONE, PieceType.EMPTY);
 		pieces[newRow + (8 * newCol)] = pieceToMove;
+		theGame.incrementGameCounter();
 	}
 
 	private short[] getPieceLocation(Piece pieceToSearchFor) throws Exception {
@@ -90,15 +90,25 @@ public class PieceList {
 		return new ImageIcon(pieceURL);
 	}
 
-	public void selectPieceOnLabel(Piece pieceToWatch) {
+	public void selectPieceOnLabel(Piece pieceToWatch, Game theGame) {
+		if(pieceToWatch.getPieceColor().equals(PieceColor.NONE) &&
+				pieceSelected == null) {
+			return;
+		}
 		if(pieceSelected == null) {
 			pieceSelected = pieceToWatch;
 			return;
 		}
+		if((theGame.getGameCounter() % 2 == 1 && pieceSelected.getPieceColor().equals(PieceColor.WHITE)) ||
+				(theGame.getGameCounter() % 2 == 0 && pieceSelected.getPieceColor().equals(PieceColor.BLACK))) {
+			pieceSelected = null;
+			return;
+		}
+		
 		short[] newLocation;
 		try {
 			newLocation = getPieceLocation(pieceToWatch);
-			movePiece(newLocation[0], newLocation[1], pieceSelected, null); // TODO Change from new Player
+			movePiece(newLocation[0], newLocation[1], pieceSelected, theGame);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

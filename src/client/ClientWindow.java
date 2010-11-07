@@ -77,9 +77,9 @@ public class ClientWindow {
 
 		for(int i = 0; i < 64; i++) { // Sudo make me a grid
 			chessSquares[i] = new JPanel();
-			chessSquares[i].setBounds((i % 8 * 60) + 10, ((i / 8) * 60) + 35, 60, 60);
+			chessSquares[i].setBounds((i % 8 * 60) + 10, ((i / 8) * 60) + 35, 60, 60); // Keeps spacing between panels
 			chessLabels.add(new JLabel());
-			if((i % 2 == 0 && (i / 8) % 2 == 0) || (i % 2 == 1 && (i / 8) % 2 == 1)) {
+			if((i % 2 == 0 && (i / 8) % 2 == 0) || (i % 2 == 1 && (i / 8) % 2 == 1)) { // Make checkered pattern
 				chessSquares[i].setBackground(Color.GRAY); // Does this make me look fat?
 			} else {
 				chessSquares[i].setBackground(Color.LIGHT_GRAY); // How about this?
@@ -90,7 +90,7 @@ public class ClientWindow {
 					game.getBoard().getPieceList().selectPieceOnLabel(
 							game.getBoard().getPieceList().getPieceAt(
 									(short)(chessLabels.indexOf(e.getSource()) / 8),
-									(short)(chessLabels.indexOf(e.getSource()) % 8)));
+									(short)(chessLabels.indexOf(e.getSource()) % 8)), game);
 				}
 			});
 			chessSquares[i].add(chessLabels.get(i));
