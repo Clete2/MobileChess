@@ -24,45 +24,45 @@ public class PieceList {
 		moveParse = new MoveParser();
 	}
 
-	public void addPiece(Short startX, Short startY, PieceColor pieceColor, PieceType pieceType) {
-		assert(pieces[startX][startY].getPieceColor() != PieceColor.NONE);
-		assert(startX < 7);
-		assert(startY < 7);
+	public void addPiece(Short startRow, Short startCol, PieceColor pieceColor, PieceType pieceType) {
+		assert(pieces[startRow][startCol].getPieceColor() != PieceColor.NONE);
+		assert(startRow < 7);
+		assert(startCol < 7);
 
-		pieces[startX][startY].setColor(pieceColor);
-		pieces[startX][startY].setPieceType(pieceType);
+		pieces[startRow][startCol].setColor(pieceColor);
+		pieces[startRow][startCol].setPieceType(pieceType);
 	}
 
-	public Piece getPieceAt(Short x, Short y) {
-		return pieces[x][y];
+	public Piece getPieceAt(Short row, Short col) {
+		return pieces[row][col];
 	}
 
-	public void movePiece(short newX, short newY, Piece pieceToMove, Player playerMoving) throws Exception {
+	public void movePiece(short newRow, short newCol, Piece pieceToMove, Player playerMoving) throws Exception {
 		// TODO Make sure that it is that player's turn.
 
 		short[] oldLocation = getPieceLocation(pieceToMove);
 
-		if(!moveParse.isMoveValid(newX, newY, pieceToMove, playerMoving)) {
+		if(!moveParse.isMoveValid(newRow, newCol, pieceToMove, playerMoving)) {
 			throw InvalidMoveException;
 		}
 
-		updatePiece(oldLocation[0], oldLocation[1], newX, newY, pieceToMove);
+		updatePiece(oldLocation[0], oldLocation[1], newRow, newCol, pieceToMove);
 		pieces[oldLocation[0]][oldLocation[1]] = new Piece(PieceColor.NONE, PieceType.EMPTY);
-		pieces[newX][newY] = pieceToMove;
+		pieces[newRow][newCol] = pieceToMove;
 	}
 
 	private short[] getPieceLocation(Piece pieceToSearchFor) throws Exception {
 		boolean found = false;
-		short x = -1;
-		short y = -1;
+		short row = -1;
+		short col = -1;
 
 		
 		for(Short i = 0; i < 8; i++) {
 			for(Short j = 0; j < 8; j++) {
 				if(pieces[i][j].equals(pieceToSearchFor)) {
 					found = true;
-					x = i;
-					y = j;
+					row = i;
+					col = j;
 					break;
 				}
 			}
@@ -75,12 +75,12 @@ public class PieceList {
 			throw PieceNotOnBoardException;
 		}
 		
-		return new short[] {x, y};
+		return new short[] {row, col};
 	}
 
-	public void updatePiece(short oldX, short oldY, short newX, short newY, Piece pieceToUpdate) {
-		ClientWindow.getChessLabels().elementAt((oldX * 8) + oldY).setIcon(null);
-		ClientWindow.getChessLabels().elementAt((newX * 8) + newY).setIcon(getImageForPiece(pieceToUpdate));
+	public void updatePiece(short oldRow, short oldCol, short newRow, short newCol, Piece pieceToUpdate) {
+		ClientWindow.getChessLabels().elementAt((oldRow * 8) + oldCol).setIcon(null);
+		ClientWindow.getChessLabels().elementAt((newRow * 8) + newCol).setIcon(getImageForPiece(pieceToUpdate));
 	}
 	
 	public ImageIcon getImageForPiece(Piece piece) {	
