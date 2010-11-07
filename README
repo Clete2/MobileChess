@@ -1,0 +1,9 @@
+Mobile Chess written entirely by Clete Blackwell II.
+http://clete2.com/
+This is a personal project.
+Free to use and distribute, so long as I get credit.
+
+Eventually, this game will have a Java Swing interface.
+It will also be easy to extend it by making any other clients for it.
+Examples would be a JavaScript web-page based client, a Java Applet,
+or even an iPhone app.

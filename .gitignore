@@ -1,0 +1,5 @@
+bin
+*.ai
+*.class
+*.jar
+*.DS_Store
