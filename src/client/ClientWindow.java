@@ -62,15 +62,24 @@ public class ClientWindow {
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
 
-		JMenuItem newGameMenuItem = new JMenuItem("New Game");
-		newGameMenuItem.addMouseListener(new MouseAdapter() {
+		JMenuItem newLocalGameMenuItem = new JMenuItem("New Local Game");
+		newLocalGameMenuItem.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				game = new Game();
 				initializePieces();
 			}
 		});
-		mnFile.add(newGameMenuItem);
+		mnFile.add(newLocalGameMenuItem);
+		
+		JMenuItem newInternetGameMenuItem = new JMenuItem("New Internet Game");
+		newInternetGameMenuItem.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				new NewInternetGameDialog();
+			}
+		});
+		mnFile.add(newInternetGameMenuItem);
 
 		chessSquares = new JPanel[64];
 		chessLabels = new Vector<JLabel>();

@@ -8,7 +8,6 @@ public class Piece {
 		this.pieceColor = pieceColor;
 		this.pieceType = pieceType;
 	}
-
 	public PieceColor getPieceColor() {
 		return pieceColor;
 	}
