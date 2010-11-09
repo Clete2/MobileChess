@@ -5,16 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import shared.Game;
-
-public class ClientReaderThread extends Thread {
+public abstract class ReaderThread extends Thread {
 	BufferedReader br;
-	ClientNetworkParser cnp;
+	NetworkParser np; // Can be either server or client
 	boolean running;
 	
-	public ClientReaderThread(InputStream is, Game theGame) {
+	public ReaderThread(InputStream is) {
 		running = true;
-		cnp = new ClientNetworkParser(theGame);
 		br = new BufferedReader(new InputStreamReader(is));
 	}
 	
@@ -23,9 +20,12 @@ public class ClientReaderThread extends Thread {
 		while(running) {
 			try {
 				if((in = br.readLine()) != null) {
-					cnp.parseInput(in);
+					np.parseInput(in);
 				}
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -36,13 +36,14 @@ public class ClientReaderThread extends Thread {
 		running = false;
 		try {
 			br.close();
-		} catch (IOException e1) {
+		} catch (IOException e) {
 			// It's OK.
 		}
 		try {
 			this.join();
 		} catch (InterruptedException e) {
-			// It's OK.
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

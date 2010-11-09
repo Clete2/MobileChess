@@ -14,7 +14,7 @@ import java.awt.event.MouseEvent;
 
 public class ServerWindow {
 
-	private static ServerHandler server;
+	private static ServerSocketHandler server;
 	private JFrame frmMobileChessServer;
 	private JTextField listenPortTextField;
 
@@ -25,7 +25,7 @@ public class ServerWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					server = new ServerHandler((short)1337);
+					server = new ServerSocketHandler((short)1337);
 					server.start();
 					ServerWindow window = new ServerWindow();
 					window.frmMobileChessServer.setVisible(true);
@@ -81,7 +81,7 @@ public class ServerWindow {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				server.shutdown();
-				server = new ServerHandler(Short.parseShort(listenPortTextField.getText()));
+				server = new ServerSocketHandler(Short.parseShort(listenPortTextField.getText()));
 				server.start();
 			}
 		});

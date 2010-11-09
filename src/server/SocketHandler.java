@@ -1,15 +1,18 @@
-package network;
+package server;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ServerHandlerThread extends Thread{
+import network.ServerReaderThread;
+import network.WriterThread;
+
+public class SocketHandler extends Thread{
 	private Socket mySocket;
-	private PrintWriter output;
+	private WriterThread wt;
+	private ServerReaderThread srt;
 	private boolean shutdown;
 
-	public ServerHandlerThread() {
+	public SocketHandler() {
 		shutdown = false;
 	}
 
@@ -22,17 +25,19 @@ public class ServerHandlerThread extends Thread{
 			assert(mySocket.isConnected() == true);
 
 			try {
-				output = new PrintWriter(mySocket.getOutputStream(), true);
-			} catch (IOException e) {
+				wt = new WriterThread(mySocket.getOutputStream());
+				wt.start();
+				srt = new ServerReaderThread(mySocket.getInputStream(), wt.getPrintWriter());
+				srt.start();
+			} catch (IOException e1) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e1.printStackTrace();
 			}
-			output.println("Connected.");
-			System.out.println("Told client: Connected.");
+
 			try {
-				sleep(5000);
+				sleep(500);
 			} catch (InterruptedException e) {
-				// It's ok.
+				// It's OK.
 			}
 
 			if(shutdown) {
@@ -54,7 +59,7 @@ public class ServerHandlerThread extends Thread{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			output.close();
+			wt.shutdown();
 			this.interrupt();
 			try {
 				this.join();

@@ -5,16 +5,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
-import network.ServerHandlerThread;
-
-public class ServerHandler extends Thread {
+public class ServerSocketHandler extends Thread {
 	private ServerSocket servingSocket;
-	private ServerHandlerThread[] playerSocket;
+	private SocketHandler[] playerSocket;
 	private short connections;
 	private short port;
 	private boolean shutdown;
 
-	public ServerHandler(short portToListen) {
+	public ServerSocketHandler(short portToListen) {
 		this.port = portToListen;
 		this.connections = 0;
 		this.shutdown = false;
@@ -26,9 +24,9 @@ public class ServerHandler extends Thread {
 	}
 
 	private void initializeSockets() {
-		playerSocket = new ServerHandlerThread[2];
-		playerSocket[0] = new ServerHandlerThread();
-		playerSocket[1] = new ServerHandlerThread();
+		playerSocket = new SocketHandler[2];
+		playerSocket[0] = new SocketHandler();
+		playerSocket[1] = new SocketHandler();
 		try {
 			servingSocket = new ServerSocket(port);
 			servingSocket.setSoTimeout(500);

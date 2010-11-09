@@ -6,14 +6,14 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import network.ClientReaderThread;
-import network.ClientWriterThread;
+import network.WriterThread;
 
 import shared.Game;
 
 
 public class ClientHandler {
 	Socket mySocket;
-	ClientWriterThread cwt;
+	WriterThread cwt;
 	ClientReaderThread crt;
 	Game theGame;
 	short port;
@@ -47,9 +47,9 @@ public class ClientHandler {
 
 	private void startIO() {
 		try {
-			ClientWriterThread cwt = new ClientWriterThread(mySocket.getOutputStream());
+			WriterThread cwt = new WriterThread(mySocket.getOutputStream());
 			cwt.start();
-			ClientReaderThread crt = new ClientReaderThread(mySocket.getInputStream());
+			ClientReaderThread crt = new ClientReaderThread(mySocket.getInputStream(), theGame);
 			crt.start();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

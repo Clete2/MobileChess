@@ -3,15 +3,19 @@ package network;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-public class ClientWriterThread extends Thread {
+public class WriterThread extends Thread {
 	PrintWriter pw;
 	
-	public ClientWriterThread(OutputStream os) {
+	public WriterThread(OutputStream os) {
 		pw = new PrintWriter(os, true);
 	}
 	
 	public void sendMessage(String messageToSend) {
 		pw.println(messageToSend);
+	}
+	
+	public PrintWriter getPrintWriter() {
+		return pw;
 	}
 	
 	public void shutdown() {
