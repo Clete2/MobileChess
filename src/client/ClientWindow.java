@@ -1,11 +1,16 @@
 package client;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Toolkit;
+import java.awt.Window;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JMenuItem;
 
@@ -54,6 +59,7 @@ public class ClientWindow {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
+		centerWindow(frame);
 
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBounds(0, 0, 515, 22);
@@ -65,7 +71,7 @@ public class ClientWindow {
 		JMenuItem newLocalGameMenuItem = new JMenuItem("New Local Game");
 		newLocalGameMenuItem.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mousePressed(MouseEvent e) {
+			public void mouseReleased(MouseEvent e) {
 				game = new Game();
 				initializePieces();
 			}
@@ -75,8 +81,35 @@ public class ClientWindow {
 		JMenuItem newInternetGameMenuItem = new JMenuItem("New Internet Game");
 		newInternetGameMenuItem.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mousePressed(MouseEvent arg0) {
-				new NewInternetGameDialog();
+			public void mouseReleased(MouseEvent arg0) {
+				IPPortValidator validator = new IPPortValidator();
+				String ip = "";
+				String port = "";
+				boolean valid = false;
+				while(!valid) {
+					ip = JOptionPane.showInputDialog("IP Address:");
+					if(ip == null) {
+						return;
+					}
+					valid = validator.isIPValid(ip);
+				}
+				valid = false;
+				while(!valid) {
+					port = JOptionPane.showInputDialog("Port:");
+					if(port == null) {
+						return;
+					}
+					valid = validator.isPortValid(port);
+				}
+				try {
+					game = new Game(validator.getIPBytes(ip), Short.parseShort(port));
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		mnFile.add(newInternetGameMenuItem);
@@ -96,7 +129,7 @@ public class ClientWindow {
 			chessLabels.get(i).addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(MouseEvent e) {
-					game.getBoard().getPieceList().selectPieceOnLabel(
+					game.getBoard().getPieceList().selectPiece(
 							game.getBoard().getPieceList().getPieceAt(
 									(short)(chessLabels.indexOf(e.getSource()) / 8),
 									(short)(chessLabels.indexOf(e.getSource()) % 8)), game);
@@ -116,5 +149,12 @@ public class ClientWindow {
 	
 	public static Vector<JLabel> getChessLabels() {
 		return chessLabels;
+	}
+	
+	private void centerWindow(Window frame) {
+	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	    int x = (int)((dimension.getWidth() - frame.getWidth()) / 2);
+	    int y = (int)((dimension.getHeight() - frame.getHeight()) / 2);
+	    frame.setLocation(x, y);
 	}
 }

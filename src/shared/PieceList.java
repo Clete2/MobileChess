@@ -90,7 +90,7 @@ public class PieceList {
 		return new ImageIcon(pieceURL);
 	}
 
-	public void selectPieceOnLabel(Piece pieceToWatch, Game theGame) {
+	public void selectPiece(Piece pieceToWatch, Game theGame) {
 		if(pieceToWatch.getPieceColor().equals(PieceColor.NONE) &&
 				pieceSelected == null) {
 			return;

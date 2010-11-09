@@ -1,6 +1,6 @@
 package shared;
 
-public class Player {
+public abstract class Player {
 	private PieceColor playerColor;
 	
 	public Player(PieceColor playerColor) {

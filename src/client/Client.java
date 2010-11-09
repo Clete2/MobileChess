@@ -1,36 +1,32 @@
 package client;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class Client {
-	Socket clientSocket;
-	BufferedReader input;
-	boolean quit;
-	short port;
 
-	public Client() {
-		port = 1337;		
-		quit = false;
-		startConnection(port);
+public class Client {
+	Socket mySocket;
+	short port;
+	byte [] ip;
+	boolean running;
+
+	public Client(byte[] ipAsByteArray, short port) {
+		this.ip = ipAsByteArray;
+		this.port = port;
+		initializeSocket();
+		startChat();
 	}
 
-	private void startConnection(short port) {
-		try {
-			clientSocket = new Socket(InetAddress.getLocalHost(), port);
-			input = new BufferedReader(
-					new InputStreamReader(clientSocket.getInputStream()));
+	public Client(Socket socket) {
+		this.mySocket = socket;
+		startChat();
+	}
 
-			String in = "";
-			while(!quit){
-				while((in = input.readLine()) != null) {
-					System.out.print(in);
-				}
-			}
+	private void initializeSocket() {
+		try {
+			this.mySocket = new Socket(InetAddress.getByAddress(ip), port);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -40,11 +36,14 @@ public class Client {
 		}
 	}
 
-	public void stopClient() {
+	public void startChat() {
 		try {
-			clientSocket.close();
-			input.close();
+			ClientWriterThread cwt = new ClientWriterThread(mySocket.getOutputStream());
+			cwt.start();
+			ClientReaderThread crt = new ClientReaderThread(mySocket.getInputStream());
+			crt.start();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
