@@ -26,6 +26,8 @@ public class Game {
 	}
 	
 	private void setupNetworkGame(byte[] ip, short port) {
+		theBoard = new Board();
+		gameCounter = 0;
 		clientHandler = new ClientHandler(ip, port, this);
 		clientHandler.sendMessage("C"); // Ask for color
 		// We will be using setLocalColor(PieceColor color) to continue initializing.
@@ -41,8 +43,6 @@ public class Game {
 			whitePlayer = new NetworkPlayer(PieceColor.WHITE);
 			blackPlayer = new LocalPlayer(PieceColor.BLACK);
 		}
-		theBoard = new Board();
-		gameCounter = 0;
 	}
 	
 	public Board getBoard() {
@@ -63,6 +63,10 @@ public class Game {
 	
 	public Player getBlackPlayer() {
 		return blackPlayer;
+	}
+	
+	public ClientHandler getClientHandler() {
+		return clientHandler;
 	}
 	
 	/**

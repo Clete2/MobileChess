@@ -6,6 +6,14 @@ public class NetworkPlayer extends Player {
 	}
 	
 	public void selectPiece(Piece piece, Game theGame) {
-		// TODO Implement
+		String messageToSend = "";
+		messageToSend +=
+			theGame.getBoard().getPieceList().getLocationOfPiece(
+					theGame.getBoard().getPieceList().getPieceSelected());
+		messageToSend += ",";
+		messageToSend += 
+			theGame.getBoard().getPieceList().getLocationOfPiece(piece);
+		System.out.println(messageToSend);
+		theGame.getClientHandler().sendMessage(messageToSend);
 	}
 }

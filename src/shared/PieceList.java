@@ -11,7 +11,7 @@ public class PieceList {
 	private Piece[] pieces;
 	private MoveParser moveParse;
 	private Piece pieceSelected;
-	private Player pieceSelector; // Player that last selected a piece
+	private Player pieceSelector;
 
 	public PieceList() {
 		pieceSelected = null;
@@ -40,16 +40,26 @@ public class PieceList {
 	}
 
 	public void movePiece(short newRow, short newCol, Piece pieceToMove, Game theGame) throws Exception {
-		// TODO Make sure that it is that player's turn.
-
 		if(!moveParse.isMoveValid(newRow, newCol, pieceToMove)) {
 			throw InvalidMoveException;
 		}
-		
+
 		short[] oldLocation = getPieceLocation(pieceToMove);
 		updatePiece(oldLocation[0], oldLocation[1], newRow, newCol, pieceToMove);
 		pieces[oldLocation[0] + (8 * oldLocation[1])] = new Piece(PieceColor.NONE, PieceType.EMPTY);
 		pieces[newRow + (8 * newCol)] = pieceToMove;
+		theGame.incrementGameCounter();
+	}
+
+	public void movePiece(short newIndex, Piece pieceToMove, Game theGame) throws Exception {
+		if(!moveParse.isMoveValid(newIndex, pieceToMove)) {
+			throw InvalidMoveException;
+		}
+
+		short[] oldLocation = getPieceLocation(pieceToMove);
+		updatePiece(oldLocation[0], oldLocation[1], newIndex, pieceToMove);
+		pieces[oldLocation[0] + (8 * oldLocation[1])] = new Piece(PieceColor.NONE, PieceType.EMPTY);
+		pieces[newIndex] = pieceToMove;
 		theGame.incrementGameCounter();
 	}
 
@@ -58,7 +68,6 @@ public class PieceList {
 		short row = -1;
 		short col = -1;
 
-		
 		for(Short i = 0; i < 8; i++) {
 			for(Short j = 0; j < 8; j++) {
 				if(pieces[i + (8 * j)].equals(pieceToSearchFor)) {
@@ -76,7 +85,7 @@ public class PieceList {
 		if(!found) {
 			throw PieceNotOnBoardException;
 		}
-		
+
 		return new short[] {row, col};
 	}
 
@@ -87,7 +96,15 @@ public class PieceList {
 		ClientWindow.getChessLabels().elementAt((newRow * 8) + 
 				newCol).setIcon(getImageForPiece(pieceToUpdate));
 	}
-	
+
+	public void updatePiece(short oldRow, short oldCol,
+			short newIndex, Piece pieceToUpdate) {
+		ClientWindow.getChessLabels().elementAt((oldRow * 8) + 
+			oldCol).setIcon(null);
+		ClientWindow.getChessLabels().elementAt(newIndex)
+			.setIcon(getImageForPiece(pieceToUpdate));
+	}
+
 	public ImageIcon getImageForPiece(Piece piece) {	
 		URL pieceURL = getClass().getResource("/images/" + 
 				piece.getPieceColor().toString() + 
@@ -120,7 +137,7 @@ public class PieceList {
 			pieceSelector = null;
 			return;
 		}
-		
+
 		short[] newLocation;
 		try {
 			newLocation = getPieceLocation(pieceToWatch);
@@ -130,14 +147,40 @@ public class PieceList {
 		}
 		pieceSelected = null;
 	}
-	
+
 	public boolean isPieceSelected() {
 		if(pieceSelected == null){
 			return false;
 		}
 		return true;
 	}
-	
+
+	public Piece getPieceSelected() {
+		return pieceSelected;
+	}
+
+	public Piece getPieceAtIndex(int i ) {
+		return pieces[i];
+	}
+
+	/**
+	 * Gets the location of the piece given.
+	 * @param piece Piece to look for.
+	 * @return -1 if not found, an integer 0 through 63 otherwise.
+	 */
+	public int getLocationOfPiece(Piece piece) {
+		for(int i = 0; i < 64; i++) {
+			if(pieces[i].equals(piece)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * Gets the player that last selected a piece.
+	 * @return
+	 */
 	public Player getPieceSelector() {
 		return pieceSelector;
 	}

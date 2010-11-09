@@ -107,6 +107,7 @@ public class ClientWindow {
 				}
 				try {
 					game = new Game(validator.getIPBytes(ip), Short.parseShort(port));
+					initializePieces();
 				} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
