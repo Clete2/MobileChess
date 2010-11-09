@@ -28,13 +28,9 @@ public class Game {
 	private void setupNetworkGame(byte[] ip, short port) {
 		clientHandler = new ClientHandler(ip, port, this);
 		clientHandler.sendMessage("C"); // Ask for color
-		try {
-			wait(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// If it doesn't timeout, we will be using setLocalColor(PieceColor color) to continue initializing.
+		// We will be using setLocalColor(PieceColor color) to continue initializing.
+		// If it isn't called, there was a timeout.
+		// TODO Re-implement this so it is proper.
 	}
 	
 	public void setLocalColor(PieceColor color) { // Continue initializing
