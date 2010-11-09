@@ -5,23 +5,30 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import network.ClientReaderThread;
+import network.ClientWriterThread;
 
-public class Client {
+import shared.Game;
+
+
+public class ClientHandler {
 	Socket mySocket;
 	ClientWriterThread cwt;
 	ClientReaderThread crt;
+	Game theGame;
 	short port;
 	byte [] ip;
 	boolean running;
 
-	public Client(byte[] ipAsByteArray, short port) {
+	public ClientHandler(byte[] ipAsByteArray, short port, Game theGame) {
 		this.ip = ipAsByteArray;
 		this.port = port;
+		this.theGame = theGame;
 		initializeSocket();
 		startIO();
 	}
 
-	public Client(Socket socket) {
+	public ClientHandler(Socket socket) {
 		this.mySocket = socket;
 		startIO();
 	}
@@ -58,5 +65,9 @@ public class Client {
 		}
 		cwt.shutdown();
 		crt.shutdown();
+	}
+	
+	public void sendMessage(String line) {
+		cwt.sendMessage(line);
 	}
 }

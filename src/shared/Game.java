@@ -1,10 +1,13 @@
 package shared;
 
+import client.ClientHandler;
+
 
 public class Game {
 	private Board theBoard;
 	private Player whitePlayer;
 	private Player blackPlayer;
+	private ClientHandler clientHandler;
 	private int gameCounter;
 	
 	public Game() {
@@ -23,8 +26,25 @@ public class Game {
 	}
 	
 	private void setupNetworkGame(byte[] ip, short port) {
-		whitePlayer = new NetworkPlayer(PieceColor.WHITE);
-		blackPlayer = new NetworkPlayer(PieceColor.BLACK);
+		clientHandler = new ClientHandler(ip, port, this);
+		clientHandler.sendMessage("C"); // Ask for color
+		try {
+			wait(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// If it doesn't timeout, we will be using setLocalColor(PieceColor color) to continue initializing.
+	}
+	
+	public void setLocalColor(PieceColor color) { // Continue initializing
+		if(color.equals(PieceColor.WHITE)) {
+			whitePlayer = new LocalNetworkPlayer(PieceColor.WHITE);
+			blackPlayer = new NetworkPlayer(PieceColor.BLACK);
+		} else {
+			whitePlayer = new NetworkPlayer(PieceColor.WHITE);
+			blackPlayer = new LocalNetworkPlayer(PieceColor.BLACK);
+		}
 		theBoard = new Board();
 		gameCounter = 0;
 	}

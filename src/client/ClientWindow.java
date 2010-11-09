@@ -14,6 +14,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JMenuItem;
 
+import network.IPPortValidator;
+
 import shared.Game;
 
 import java.awt.event.MouseAdapter;

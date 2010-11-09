@@ -1,4 +1,4 @@
-package client;
+package network;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,12 +7,12 @@ import java.io.InputStreamReader;
 
 public class ClientReaderThread extends Thread {
 	BufferedReader br;
-	NetworkParser np;
+	ClientNetworkParser np;
 	boolean running;
 	
 	public ClientReaderThread(InputStream is) {
 		running = true;
-		np = new NetworkParser();
+		np = new ClientNetworkParser();
 		br = new BufferedReader(new InputStreamReader(is));
 	}
 	

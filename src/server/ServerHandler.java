@@ -5,6 +5,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
+import network.ServerHandlerThread;
+
 public class ServerHandler extends Thread {
 	private ServerSocket servingSocket;
 	private ServerHandlerThread[] playerSocket;
