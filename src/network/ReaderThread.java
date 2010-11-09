@@ -2,17 +2,26 @@ package network;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.Socket;
+
+import server.ServerSocketHandler;
 
 public abstract class ReaderThread extends Thread {
 	BufferedReader br;
 	NetworkParser np; // Can be either server or client
+	Socket mySocket;
 	boolean running;
 	
-	public ReaderThread(InputStream is) {
+	public ReaderThread(Socket mySocket) {
+		this.mySocket = mySocket;
 		running = true;
-		br = new BufferedReader(new InputStreamReader(is));
+		try {
+			br = new BufferedReader(new InputStreamReader(mySocket.getInputStream()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void run() {
@@ -20,6 +29,8 @@ public abstract class ReaderThread extends Thread {
 		while(running) {
 			try {
 				if((in = br.readLine()) != null) {
+					// So the server knows who to send to
+					ServerSocketHandler.setLastMessenger(mySocket);
 					np.parseInput(in);
 				}
 			} catch (IOException e) {

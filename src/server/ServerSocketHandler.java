@@ -9,11 +9,13 @@ public class ServerSocketHandler extends Thread {
 	private ServerSocket servingSocket;
 	private SocketHandler[] playerSocket;
 	private static short connections;
+	private static Socket lastMessenger; // Last Socket to send to server.
 	private short port;
 	private boolean shutdown;
 
 	public ServerSocketHandler(short portToListen) {
 		this.port = portToListen;
+		ServerSocketHandler.lastMessenger = null;
 		ServerSocketHandler.connections = 0;
 		this.shutdown = false;
 	}
@@ -41,7 +43,7 @@ public class ServerSocketHandler extends Thread {
 			try {
 				Socket mySocket = servingSocket.accept();
 				playerSocket[connections].setSocket(mySocket); 
-				playerSocket[connections].start();
+				playerSocket[connections].initialize();
 				connections++;
 			} catch (SocketTimeoutException e) {
 				// It's OK.
@@ -62,14 +64,12 @@ public class ServerSocketHandler extends Thread {
 		return ServerSocketHandler.connections;
 	}
 	
+	public static void setLastMessenger(Socket lastMessenger) {
+		ServerSocketHandler.lastMessenger = lastMessenger;
+	}
+	
 	public void shutdown() { 
 		if (isAlive()) {
-			if(playerSocket[0].isAlive()) {
-				playerSocket[0].shutdown();
-			}
-			if(playerSocket[1].isAlive()) {
-				playerSocket[2].shutdown();
-			}
 			this.shutdown = true;
 			this.interrupt();
 			try {

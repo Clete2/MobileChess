@@ -1,11 +1,11 @@
 package network;
 
-import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.Socket;
 
 public class ServerReaderThread extends ReaderThread {
-	public ServerReaderThread(InputStream is, PrintWriter pw) {
-		super(is);
+	public ServerReaderThread(Socket mySocket, PrintWriter pw) {
+		super(mySocket);
 		this.np = new ServerNetworkParser(pw);
 	}
 }
