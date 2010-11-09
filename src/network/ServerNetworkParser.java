@@ -6,11 +6,11 @@ import server.ServerSocketHandler;
 
 public class ServerNetworkParser extends NetworkParser {
 	PrintWriter pw;
-	
+
 	public ServerNetworkParser(PrintWriter pw) {
 		this.pw = pw;
 	}
-	
+
 	public void parseInput(String in) {
 		if(in.equalsIgnoreCase("C")) { // Client wants color
 			if(ServerSocketHandler.getNumberOfConnections() == 1) { // First player to connect gets white player
@@ -21,5 +21,7 @@ public class ServerNetworkParser extends NetworkParser {
 				return;
 			}
 		}
+		ServerSocketHandler.getRelaySocketHandler()
+			.getWriterThread().pw.println(in);
 	}
 }

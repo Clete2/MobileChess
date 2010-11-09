@@ -28,4 +28,12 @@ public class SocketHandler {
 	public void setSocket(Socket mySocket) {
 		this.mySocket = mySocket;
 	}
+	
+	public Socket getSocket() {
+		return mySocket;
+	}
+	
+	public WriterThread getWriterThread() {
+		return wt;
+	}
 }

@@ -7,7 +7,7 @@ import java.net.SocketTimeoutException;
 
 public class ServerSocketHandler extends Thread {
 	private ServerSocket servingSocket;
-	private SocketHandler[] playerSocket;
+	private static SocketHandler[] playerSocket;
 	private static short connections;
 	private static Socket lastMessenger; // Last Socket to send to server.
 	private short port;
@@ -66,6 +66,19 @@ public class ServerSocketHandler extends Thread {
 	
 	public static void setLastMessenger(Socket lastMessenger) {
 		ServerSocketHandler.lastMessenger = lastMessenger;
+	}
+	
+	/**
+	 * Gets the SocketHandler for the socket that did not last
+	 * send a message. This is used for relaying messages
+	 * from one client to another.
+	 * @return SocketHandler socket that did not send the last message.
+	 */
+	public static SocketHandler getRelaySocketHandler() {
+		if(playerSocket[0].getSocket().equals(lastMessenger)) {
+			return playerSocket[1];
+		}
+		return playerSocket[0];
 	}
 	
 	public void shutdown() { 
