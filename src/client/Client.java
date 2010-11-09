@@ -16,12 +16,12 @@ public class Client {
 		this.ip = ipAsByteArray;
 		this.port = port;
 		initializeSocket();
-		startChat();
+		startIO();
 	}
 
 	public Client(Socket socket) {
 		this.mySocket = socket;
-		startChat();
+		startIO();
 	}
 
 	private void initializeSocket() {
@@ -36,7 +36,7 @@ public class Client {
 		}
 	}
 
-	public void startChat() {
+	public void startIO() {
 		try {
 			ClientWriterThread cwt = new ClientWriterThread(mySocket.getOutputStream());
 			cwt.start();
