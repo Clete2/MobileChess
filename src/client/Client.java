@@ -8,6 +8,8 @@ import java.net.UnknownHostException;
 
 public class Client {
 	Socket mySocket;
+	ClientWriterThread cwt;
+	ClientReaderThread crt;
 	short port;
 	byte [] ip;
 	boolean running;
@@ -36,7 +38,7 @@ public class Client {
 		}
 	}
 
-	public void startIO() {
+	private void startIO() {
 		try {
 			ClientWriterThread cwt = new ClientWriterThread(mySocket.getOutputStream());
 			cwt.start();
@@ -46,5 +48,15 @@ public class Client {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void shutdown() {
+		try {
+			mySocket.close();
+		} catch (IOException e) {
+			// It's OK.
+		}
+		cwt.shutdown();
+		crt.shutdown();
 	}
 }
