@@ -8,13 +8,13 @@ import java.net.SocketTimeoutException;
 public class ServerSocketHandler extends Thread {
 	private ServerSocket servingSocket;
 	private SocketHandler[] playerSocket;
-	private short connections;
+	private static short connections;
 	private short port;
 	private boolean shutdown;
 
 	public ServerSocketHandler(short portToListen) {
 		this.port = portToListen;
-		this.connections = 0;
+		ServerSocketHandler.connections = 0;
 		this.shutdown = false;
 	}
 
@@ -56,6 +56,10 @@ public class ServerSocketHandler extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static int getNumberOfConnections() {
+		return ServerSocketHandler.connections;
 	}
 	
 	public void shutdown() { 
