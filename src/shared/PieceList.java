@@ -11,9 +11,11 @@ public class PieceList {
 	private Piece[] pieces;
 	private MoveParser moveParse;
 	private Piece pieceSelected;
+	private Player pieceSelector; // Player that last selected a piece
 
 	public PieceList() {
 		pieceSelected = null;
+		pieceSelector = null;
 		pieces = new Piece[64];
 
 		for(Short i = 0; i < 8; i++) {
@@ -78,9 +80,12 @@ public class PieceList {
 		return new short[] {row, col};
 	}
 
-	public void updatePiece(short oldRow, short oldCol, short newRow, short newCol, Piece pieceToUpdate) {
-		ClientWindow.getChessLabels().elementAt((oldRow * 8) + oldCol).setIcon(null);
-		ClientWindow.getChessLabels().elementAt((newRow * 8) + newCol).setIcon(getImageForPiece(pieceToUpdate));
+	public void updatePiece(short oldRow, short oldCol, short newRow,
+			short newCol, Piece pieceToUpdate) {
+		ClientWindow.getChessLabels().elementAt((oldRow * 8) + 
+				oldCol).setIcon(null);
+		ClientWindow.getChessLabels().elementAt((newRow * 8) + 
+				newCol).setIcon(getImageForPiece(pieceToUpdate));
 	}
 	
 	public ImageIcon getImageForPiece(Piece piece) {	
@@ -90,6 +95,13 @@ public class PieceList {
 		return new ImageIcon(pieceURL);
 	}
 
+	/**
+	 * First selects a piece as a candidate for moving,
+	 * then if the second selection is a valid move for that
+	 * piece, it moves the first piece to the square of the second piece.
+	 * @param pieceToWatch
+	 * @param theGame
+	 */
 	public void selectPiece(Piece pieceToWatch, Game theGame) {
 		if(pieceToWatch.getPieceColor().equals(PieceColor.NONE) &&
 				pieceSelected == null) {
@@ -97,11 +109,15 @@ public class PieceList {
 		}
 		if(pieceSelected == null) {
 			pieceSelected = pieceToWatch;
+			pieceSelector = theGame.getPlayerForColor(pieceToWatch.getPieceColor());
 			return;
 		}
-		if((theGame.getGameCounter() % 2 == 1 && pieceSelected.getPieceColor().equals(PieceColor.WHITE)) ||
-				(theGame.getGameCounter() % 2 == 0 && pieceSelected.getPieceColor().equals(PieceColor.BLACK))) {
+		if((theGame.getGameCounter() % 2 == 1 &&
+				pieceSelected.getPieceColor().equals(PieceColor.WHITE)) ||
+				(theGame.getGameCounter() % 2 == 0 &&
+						pieceSelected.getPieceColor().equals(PieceColor.BLACK))) {
 			pieceSelected = null;
+			pieceSelector = null;
 			return;
 		}
 		
@@ -113,5 +129,16 @@ public class PieceList {
 			e.printStackTrace();
 		}
 		pieceSelected = null;
+	}
+	
+	public boolean isPieceSelected() {
+		if(pieceSelected == null){
+			return false;
+		}
+		return true;
+	}
+	
+	public Player getPieceSelector() {
+		return pieceSelector;
 	}
 }

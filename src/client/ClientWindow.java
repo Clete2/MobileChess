@@ -17,6 +17,8 @@ import javax.swing.JMenuItem;
 import network.IPPortValidator;
 
 import shared.Game;
+import shared.Piece;
+import shared.PieceColor;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -79,7 +81,7 @@ public class ClientWindow {
 			}
 		});
 		mnFile.add(newLocalGameMenuItem);
-		
+
 		JMenuItem newInternetGameMenuItem = new JMenuItem("New Internet Game");
 		newInternetGameMenuItem.addMouseListener(new MouseAdapter() {
 			@Override
@@ -131,10 +133,19 @@ public class ClientWindow {
 			chessLabels.get(i).addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(MouseEvent e) {
-					game.getBoard().getPieceList().selectPiece(
-							game.getBoard().getPieceList().getPieceAt(
-									(short)(chessLabels.indexOf(e.getSource()) / 8),
-									(short)(chessLabels.indexOf(e.getSource()) % 8)), game);
+					Piece pieceToWatch = 
+						game.getBoard().getPieceList().getPieceAt(
+								(short)(chessLabels.indexOf(e.getSource()) / 8),
+								(short)(chessLabels.indexOf(e.getSource()) % 8));
+					if(pieceToWatch.getPieceColor().equals(PieceColor.WHITE) &&
+							game.getBoard().getPieceList().isPieceSelected() == false) { // First selection, player and piece are white
+						game.getWhitePlayer().selectPiece(pieceToWatch, game);
+					} else if(pieceToWatch.getPieceColor().equals(PieceColor.BLACK) &&
+							game.getBoard().getPieceList().isPieceSelected() == false) { // First selection, player and piece are black
+						game.getBlackPlayer().selectPiece(pieceToWatch, game);
+					} else { // Moving to blank piece or second selection (where player is allowed to click on opposite color)
+						game.getBoard().getPieceList().getPieceSelector().selectPiece(pieceToWatch, game);
+					}
 				}
 			});
 			chessSquares[i].add(chessLabels.get(i));
@@ -148,15 +159,15 @@ public class ClientWindow {
 					game.getBoard().getPieceList().getPieceAt((short)(i / 8), (short)(i % 8)))));
 		}
 	}
-	
+
 	public static Vector<JLabel> getChessLabels() {
 		return chessLabels;
 	}
-	
+
 	private void centerWindow(Window frame) {
-	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-	    int x = (int)((dimension.getWidth() - frame.getWidth()) / 2);
-	    int y = (int)((dimension.getHeight() - frame.getHeight()) / 2);
-	    frame.setLocation(x, y);
+		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		int x = (int)((dimension.getWidth() - frame.getWidth()) / 2);
+		int y = (int)((dimension.getHeight() - frame.getHeight()) / 2);
+		frame.setLocation(x, y);
 	}
 }

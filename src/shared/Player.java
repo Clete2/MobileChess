@@ -10,4 +10,8 @@ public abstract class Player {
 	public PieceColor getPlayerColor() {
 		return playerColor;
 	}
+
+	public void selectPiece(Piece piece, Game theGame) {
+		return; // Only works in LocalPlayer.
+	}
 }

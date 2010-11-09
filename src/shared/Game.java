@@ -64,4 +64,19 @@ public class Game {
 	public Player getBlackPlayer() {
 		return blackPlayer;
 	}
+	
+	/**
+	 *
+	 * @param color
+	 * @return The player that is the color given. If the color given is NONE, null is returned.
+	 */
+	public Player getPlayerForColor(PieceColor color) {
+		if(color.equals(PieceColor.WHITE)){
+			return getWhitePlayer();
+		} else if(color.equals(PieceColor.BLACK)){
+			return getWhitePlayer();
+		} else {
+			return null;
+		}
+	}
 }
