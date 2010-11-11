@@ -6,7 +6,6 @@ import javax.swing.ImageIcon;
 import client.ClientWindow;
 
 public class PieceList {
-	private static final Exception PieceNotOnBoardException = null;
 	private static final Exception InvalidMoveException = null;
 	private Piece[] pieces;
 	private MoveParser moveParse;

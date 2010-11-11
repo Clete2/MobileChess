@@ -37,11 +37,11 @@ public class Game {
 	
 	public void setLocalColor(PieceColor color) { // Continue initializing
 		if(color.equals(PieceColor.WHITE)) {
-			whitePlayer = new LocalPlayer(PieceColor.WHITE);
-			blackPlayer = new NetworkPlayer(PieceColor.BLACK);
-		} else {
 			whitePlayer = new NetworkPlayer(PieceColor.WHITE);
 			blackPlayer = new LocalPlayer(PieceColor.BLACK);
+		} else {
+			whitePlayer = new LocalPlayer(PieceColor.WHITE);
+			blackPlayer = new NetworkPlayer(PieceColor.BLACK);
 		}
 	}
 	
