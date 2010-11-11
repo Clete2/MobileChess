@@ -139,12 +139,12 @@ public class ClientWindow {
 								(short)(chessLabels.indexOf(e.getSource()) / 8),
 								(short)(chessLabels.indexOf(e.getSource()) % 8));
 					if(pieceToWatch.getPieceColor().equals(PieceColor.WHITE) &&
-							game.getBoard().getPieceList().isPieceSelected() == false) { // First selection, player and piece are white
+							!game.getBoard().getPieceList().isPieceSelected()) { // First selection, player and piece are white
 						game.getWhitePlayer().selectPiece(pieceToWatch, game);
 					} else if(pieceToWatch.getPieceColor().equals(PieceColor.BLACK) &&
-							game.getBoard().getPieceList().isPieceSelected() == false) { // First selection, player and piece are black
+							!game.getBoard().getPieceList().isPieceSelected()) { // First selection, player and piece are black
 						game.getBlackPlayer().selectPiece(pieceToWatch, game);
-					} else { // Moving to blank piece or second selection (where player is allowed to click on opposite color)
+					} else if(game.getBoard().getPieceList().isPieceSelected()) { // Moving to blank piece or second selection (where player is allowed to click on opposite color)
 						game.getBoard().getPieceList().getPieceSelector().selectPiece(pieceToWatch, game);
 					}
 				}

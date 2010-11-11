@@ -78,7 +78,7 @@ public class Game {
 		if(color.equals(PieceColor.WHITE)){
 			return getWhitePlayer();
 		} else if(color.equals(PieceColor.BLACK)){
-			return getWhitePlayer();
+			return getBlackPlayer();
 		} else {
 			return null;
 		}

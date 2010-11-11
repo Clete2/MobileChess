@@ -21,7 +21,8 @@ public class ServerNetworkParser extends NetworkParser {
 				return;
 			}
 		}
+		// Relay message to other client.
 		ServerSocketHandler.getRelaySocketHandler()
-			.getWriterThread().pw.println(in);
+			.getWriterThread().sendMessage(in);
 	}
 }

@@ -49,6 +49,7 @@ public class PieceList {
 		pieces[oldLocation[0] + (8 * oldLocation[1])] = new Piece(PieceColor.NONE, PieceType.EMPTY);
 		pieces[newRow + (8 * newCol)] = pieceToMove;
 		theGame.incrementGameCounter();
+		pieceSelected = null;
 	}
 
 	public void movePiece(short newIndex, Piece pieceToMove, Game theGame) throws Exception {
@@ -61,6 +62,7 @@ public class PieceList {
 		pieces[oldLocation[0] + (8 * oldLocation[1])] = new Piece(PieceColor.NONE, PieceType.EMPTY);
 		pieces[newIndex] = pieceToMove;
 		theGame.incrementGameCounter();
+		pieceSelected = null;
 	}
 
 	private short[] getPieceLocation(Piece pieceToSearchFor) throws Exception {

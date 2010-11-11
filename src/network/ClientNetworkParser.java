@@ -9,18 +9,19 @@ import shared.PieceColor;
 public class ClientNetworkParser extends NetworkParser {	
 	private static final Exception NoMatchException = null;
 	Game theGame;
-	
+
 	public ClientNetworkParser(Game theGame) {
 		this.theGame = theGame;
 	}
 
 	public void parseInput(String in) throws Exception {
-		if(in.equalsIgnoreCase("W") || in.equalsIgnoreCase("B")) { // User asked for color
-			if(in.equalsIgnoreCase("W")) {
-				theGame.setLocalColor(PieceColor.WHITE);
-			} else {
-				theGame.setLocalColor(PieceColor.BLACK);
-			}
+		// User asked for color
+		if(in.equalsIgnoreCase("W")) {
+			theGame.setLocalColor(PieceColor.WHITE);
+			return;
+		} else if(in.equalsIgnoreCase("B")) {
+			theGame.setLocalColor(PieceColor.BLACK);
+			return;
 		}
 		// User must have sent coordinates
 		Pattern coordPattern = Pattern.compile("(\\d{1,2})\\,(\\d{1,2})");
@@ -30,9 +31,9 @@ public class ClientNetworkParser extends NetworkParser {
 		}
 		try {
 			theGame.getBoard().getPieceList()
-					.movePiece(Short.parseShort(coordMatcher.group(1)), 
+			.movePiece((Short.parseShort(coordMatcher.group(2))), 
 					theGame.getBoard().getPieceList()
-					.getPieceAtIndex(Integer.parseInt(coordMatcher.group(2))),
+					.getPieceAtIndex(Integer.parseInt(coordMatcher.group(1))),
 					theGame);
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
