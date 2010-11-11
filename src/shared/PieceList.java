@@ -18,38 +18,15 @@ public class PieceList {
 		pieceSelector = null;
 		pieces = new Piece[64];
 
-		for(Short i = 0; i < 8; i++) {
-			for(Short j = 0; j < 8; j++) {
-				pieces[i + (8 * j)] = new Piece(PieceColor.NONE, PieceType.EMPTY);
-			}
+		for(Short i = 0; i < 64; i++) {
+				pieces[i] = new Piece(PieceColor.NONE, PieceType.EMPTY);
 		}
 		moveParse = new MoveParser();
 	}
 
-	public void addPiece(Short startRow, Short startCol, PieceColor pieceColor, PieceType pieceType) {
-		assert(pieces[startRow + (8 * startCol)].getPieceColor() != PieceColor.NONE);
-		assert(startRow < 7);
-		assert(startCol < 7);
-
-		pieces[startRow + (8 * startCol)].setColor(pieceColor);
-		pieces[startRow + (8 * startCol)].setPieceType(pieceType);
-	}
-
-	public Piece getPieceAt(Short row, Short col) {
-		return pieces[row + (8 * col)];
-	}
-
-	public void movePiece(short newRow, short newCol, Piece pieceToMove, Game theGame) throws Exception {
-		if(!moveParse.isMoveValid(newRow, newCol, pieceToMove)) {
-			throw InvalidMoveException;
-		}
-
-		short[] oldLocation = getPieceLocation(pieceToMove);
-		updatePiece(oldLocation[0], oldLocation[1], newRow, newCol, pieceToMove);
-		pieces[oldLocation[0] + (8 * oldLocation[1])] = new Piece(PieceColor.NONE, PieceType.EMPTY);
-		pieces[newRow + (8 * newCol)] = pieceToMove;
-		theGame.incrementGameCounter();
-		pieceSelected = null;
+	public void addPiece(short index, PieceColor pieceColor, PieceType pieceType) {
+		pieces[index].setColor(pieceColor);
+		pieces[index].setPieceType(pieceType);
 	}
 
 	public void movePiece(short newIndex, Piece pieceToMove, Game theGame) throws Exception {
@@ -57,52 +34,16 @@ public class PieceList {
 			throw InvalidMoveException;
 		}
 
-		short[] oldLocation = getPieceLocation(pieceToMove);
-		updatePiece(oldLocation[0], oldLocation[1], newIndex, pieceToMove);
-		pieces[oldLocation[0] + (8 * oldLocation[1])] = new Piece(PieceColor.NONE, PieceType.EMPTY);
+		updatePiece((short)getPieceLocation(pieceToMove), newIndex, pieceToMove);
+		pieces[getPieceLocation(pieceToMove)] = new Piece(PieceColor.NONE, PieceType.EMPTY);
 		pieces[newIndex] = pieceToMove;
 		theGame.incrementGameCounter();
 		pieceSelected = null;
 	}
 
-	private short[] getPieceLocation(Piece pieceToSearchFor) throws Exception {
-		boolean found = false;
-		short row = -1;
-		short col = -1;
-
-		for(Short i = 0; i < 8; i++) {
-			for(Short j = 0; j < 8; j++) {
-				if(pieces[i + (8 * j)].equals(pieceToSearchFor)) {
-					found = true;
-					row = i;
-					col = j;
-					break;
-				}
-			}
-			if(found == true) {
-				break;
-			}
-		}
-
-		if(!found) {
-			throw PieceNotOnBoardException;
-		}
-
-		return new short[] {row, col};
-	}
-
-	public void updatePiece(short oldRow, short oldCol, short newRow,
-			short newCol, Piece pieceToUpdate) {
-		ClientWindow.getChessLabels().elementAt((oldRow * 8) + 
-				oldCol).setIcon(null);
-		ClientWindow.getChessLabels().elementAt((newRow * 8) + 
-				newCol).setIcon(getImageForPiece(pieceToUpdate));
-	}
-
-	public void updatePiece(short oldRow, short oldCol,
+	public void updatePiece(short oldIndex,
 			short newIndex, Piece pieceToUpdate) {
-		ClientWindow.getChessLabels().elementAt((oldRow * 8) + 
-			oldCol).setIcon(null);
+		ClientWindow.getChessLabels().elementAt(oldIndex).setIcon(null);
 		ClientWindow.getChessLabels().elementAt(newIndex)
 			.setIcon(getImageForPiece(pieceToUpdate));
 	}
@@ -140,10 +81,8 @@ public class PieceList {
 			return;
 		}
 
-		short[] newLocation;
 		try {
-			newLocation = getPieceLocation(pieceToWatch);
-			movePiece(newLocation[0], newLocation[1], pieceSelected, theGame);
+			movePiece((short)getPieceLocation(pieceToWatch), pieceSelected, theGame);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -170,9 +109,9 @@ public class PieceList {
 	 * @param piece Piece to look for.
 	 * @return -1 if not found, an integer 0 through 63 otherwise.
 	 */
-	public int getLocationOfPiece(Piece piece) {
+	public int getPieceLocation(Piece piece) {
 		for(int i = 0; i < 64; i++) {
-			if(pieces[i].equals(piece)) {
+			if(pieces[i] == piece) {
 				return i;
 			}
 		}

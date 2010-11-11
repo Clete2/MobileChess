@@ -135,9 +135,7 @@ public class ClientWindow {
 				@Override
 				public void mousePressed(MouseEvent e) {
 					Piece pieceToWatch = 
-						game.getBoard().getPieceList().getPieceAt(
-								(short)(chessLabels.indexOf(e.getSource()) / 8),
-								(short)(chessLabels.indexOf(e.getSource()) % 8));
+						game.getBoard().getPieceList().getPieceAtIndex(chessLabels.indexOf(e.getSource()));
 					if(pieceToWatch.getPieceColor().equals(PieceColor.WHITE) &&
 							!game.getBoard().getPieceList().isPieceSelected()) { // First selection, player and piece are white
 						game.getWhitePlayer().selectPiece(pieceToWatch, game);
@@ -157,7 +155,7 @@ public class ClientWindow {
 	private void initializePieces() {
 		for(short i = 0; i < 64; i++) {
 			chessLabels.elementAt(i).setIcon(game.getBoard().getPieceList().getImageForPiece((
-					game.getBoard().getPieceList().getPieceAt((short)(i / 8), (short)(i % 8)))));
+					game.getBoard().getPieceList().getPieceAtIndex(i))));
 		}
 	}
 
