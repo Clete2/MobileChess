@@ -5,6 +5,13 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import client.ClientWindow;
 
+/**
+ * Contains a list of the pieces on the board and includes necessary
+ * functions for game operation relating to the movement and position
+ * of pieces.
+ * @author Clete Blackwell II
+ *
+ */
 public class PieceList {
 	private static final Exception InvalidMoveException = null;
 	private Piece[] pieces;
