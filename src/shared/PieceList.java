@@ -19,6 +19,9 @@ public class PieceList {
 	private Piece pieceSelected;
 	private Player pieceSelector;
 
+	/**
+	 * Default constructor. Initializes.
+	 */
 	public PieceList() {
 		initialize();
 	}
