@@ -13,6 +13,13 @@ public class PieceList {
 	private Player pieceSelector;
 
 	public PieceList() {
+		initialize();
+	}
+
+	/**
+	 * Startup for a new PieceList().
+	 */
+	private void initialize() {
 		pieceSelected = null;
 		pieceSelector = null;
 		pieces = new Piece[64];
@@ -22,12 +29,26 @@ public class PieceList {
 		}
 		moveParse = new MoveParser();
 	}
-
+	
+	/**
+	 * Adds a piece at the selected index in the array.
+	 * @param index index at which to add a new piece.
+	 * The previous piece at this index is removed.
+	 * @param pieceColor A PieceColor object referencing the color of the piece.
+	 * @param pieceType A PieceType object referencing the type of the piece.
+	 */
 	public void addPiece(short index, PieceColor pieceColor, PieceType pieceType) {
 		pieces[index].setColor(pieceColor);
 		pieces[index].setPieceType(pieceType);
 	}
 
+	/**
+	 * Moves pieceToMove to the newIndex.
+	 * @param newIndex New place for pieceToMove.
+	 * @param pieceToMove The Piece to move.
+	 * @param theGame The current game.
+	 * @throws Exception InvalidMoveException, if the move is invalid.
+	 */
 	public void movePiece(short newIndex, Piece pieceToMove, Game theGame) throws Exception {
 		if(!moveParse.isMoveValid(newIndex, pieceToMove)) {
 			throw InvalidMoveException;
@@ -38,15 +59,27 @@ public class PieceList {
 		pieces[newIndex] = pieceToMove;
 		theGame.incrementGameCounter();
 		pieceSelected = null;
+		pieceSelector = null;
 	}
 
-	public void updatePiece(short oldIndex,
+	/**
+	 * Updates the GUI to represent a recent piece move.
+	 * @param oldIndex Old location of piece.
+	 * @param newIndex New location of piece.
+	 * @param pieceToUpdate Pice to move.
+	 */
+	private void updatePiece(short oldIndex,
 			short newIndex, Piece pieceToUpdate) {
 		ClientWindow.getChessLabels().elementAt(oldIndex).setIcon(null);
 		ClientWindow.getChessLabels().elementAt(newIndex)
 			.setIcon(getImageForPiece(pieceToUpdate));
 	}
 
+	/**
+	 * Gets the proper image for the piece.
+	 * @param piece Piece to get an image for.
+	 * @return ImageIcon for piece.
+	 */
 	public ImageIcon getImageForPiece(Piece piece) {	
 		URL pieceURL = getClass().getResource("/images/" + 
 				piece.getPieceColor().toString() + 
@@ -86,21 +119,35 @@ public class PieceList {
 			e.printStackTrace();
 		}
 		pieceSelected = null;
+		pieceSelector = null;
 	}
 
+	/**
+	 * Checks to see if a piece is selected as a candidate for moving.
+	 * @return True if a piece is selected, false otherwise.
+	 */
 	public boolean isPieceSelected() {
 		if(pieceSelected == null){
 			return false;
 		}
 		return true;
 	}
-
+	
+	/**
+	 * Gets the current piece that is selected as a candidate for moving.
+	 * @return Piece that is selected. Can be null.
+	 */
 	public Piece getPieceSelected() {
 		return pieceSelected;
 	}
 
-	public Piece getPieceAtIndex(int i ) {
-		return pieces[i];
+	/**
+	 * Gets the piece at the specified index.
+	 * @param i Index to use.
+	 * @return The Piece object at the specified index.
+	 */
+	public Piece getPieceAtIndex(int index) {
+		return pieces[index];
 	}
 
 	/**
