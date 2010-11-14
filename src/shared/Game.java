@@ -1,6 +1,7 @@
 package shared;
 
 import client.ClientHandler;
+import client.ClientWindow;
 
 
 public class Game {
@@ -39,9 +40,11 @@ public class Game {
 		if(color.equals(PieceColor.WHITE)) {
 			whitePlayer = new NetworkPlayer(PieceColor.WHITE);
 			blackPlayer = new LocalPlayer(PieceColor.BLACK);
+			ClientWindow.setColorLabelText("Color: White");
 		} else {
 			whitePlayer = new LocalPlayer(PieceColor.WHITE);
 			blackPlayer = new NetworkPlayer(PieceColor.BLACK);
+			ClientWindow.setColorLabelText("Color: Black");
 		}
 	}
 	

@@ -27,6 +27,7 @@ import java.util.Vector;
 public class ClientWindow {
 
 	private JFrame frame;
+	private static JLabel colorLabel;
 	private static JPanel[] chessSquares;
 	private static Vector<JLabel> chessLabels;
 	private static Game game;
@@ -59,7 +60,7 @@ public class ClientWindow {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 502, 550);
+		frame.setBounds(100, 100, 502, 565);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
@@ -118,6 +119,10 @@ public class ClientWindow {
 			}
 		});
 		mnFile.add(newInternetGameMenuItem);
+		
+		colorLabel = new JLabel("");
+		colorLabel.setBounds(10, 521, 95, 16);
+		frame.getContentPane().add(colorLabel);
 
 		chessSquares = new JPanel[64];
 		chessLabels = new Vector<JLabel>();
@@ -168,5 +173,9 @@ public class ClientWindow {
 		int x = (int)((dimension.getWidth() - frame.getWidth()) / 2);
 		int y = (int)((dimension.getHeight() - frame.getHeight()) / 2);
 		frame.setLocation(x, y);
+	}
+	
+	public static void setColorLabelText(String textToSet) {
+		colorLabel.setText(textToSet);
 	}
 }
