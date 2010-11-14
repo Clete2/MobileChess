@@ -83,7 +83,7 @@ public class ClientWindow {
 		});
 		mnFile.add(newLocalGameMenuItem);
 
-		JMenuItem newInternetGameMenuItem = new JMenuItem("New Internet Game");
+		JMenuItem newInternetGameMenuItem = new JMenuItem("Join Internet Game");
 		newInternetGameMenuItem.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
