@@ -23,11 +23,14 @@ import shared.PieceColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
+import javax.swing.SwingConstants;
 
 public class ClientWindow {
 
 	private JFrame frame;
 	private static JLabel colorLabel;
+	private static JLabel turnLabel;
+	private static JLabel turnNumberLabel;
 	private static JPanel[] chessSquares;
 	private static Vector<JLabel> chessLabels;
 	private static Game game;
@@ -123,6 +126,15 @@ public class ClientWindow {
 		colorLabel = new JLabel("");
 		colorLabel.setBounds(10, 521, 95, 16);
 		frame.getContentPane().add(colorLabel);
+		
+		turnLabel = new JLabel("");
+		turnLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		turnLabel.setBounds(355, 521, 132, 16);
+		frame.getContentPane().add(turnLabel);
+		
+		turnNumberLabel = new JLabel("");
+		turnNumberLabel.setBounds(202, 521, 122, 16);
+		frame.getContentPane().add(turnNumberLabel);
 
 		chessSquares = new JPanel[64];
 		chessLabels = new Vector<JLabel>();
@@ -177,5 +189,13 @@ public class ClientWindow {
 	
 	public static void setColorLabelText(String textToSet) {
 		colorLabel.setText(textToSet);
+	}
+	
+	public static void setTurnLabelText(String textToSet) {
+		turnLabel.setText(textToSet);
+	}
+	
+	public static void setTurnNumberLabelText(String textToSet) {
+		turnNumberLabel.setText(textToSet);
 	}
 }

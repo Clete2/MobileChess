@@ -9,14 +9,19 @@ public class Game {
 	private Player whitePlayer;
 	private Player blackPlayer;
 	private ClientHandler clientHandler;
+	private boolean localGame;
 	private int gameCounter;
 	
 	public Game() {
+		localGame = true;
 		setupLocalGame();
+		ClientWindow.setTurnNumberLabelText("Turn: 1");
 	}
 	
 	public Game(byte[] ip, short port) {
+		localGame = false;
 		setupNetworkGame(ip, port);
+		ClientWindow.setTurnNumberLabelText("Turn: 1");
 	}
 	
 	private void setupLocalGame() {
@@ -41,10 +46,12 @@ public class Game {
 			whitePlayer = new NetworkPlayer(PieceColor.WHITE);
 			blackPlayer = new LocalPlayer(PieceColor.BLACK);
 			ClientWindow.setColorLabelText("Color: White");
+			ClientWindow.setTurnLabelText("Your turn.");
 		} else {
 			whitePlayer = new LocalPlayer(PieceColor.WHITE);
 			blackPlayer = new NetworkPlayer(PieceColor.BLACK);
 			ClientWindow.setColorLabelText("Color: Black");
+			ClientWindow.setTurnLabelText("Opponent's turn.");
 		}
 	}
 	
@@ -54,8 +61,34 @@ public class Game {
 	
 	public void incrementGameCounter() {
 		gameCounter++;
+		ClientWindow.setTurnNumberLabelText("Turn: " + (gameCounter + 1));
+		if(localGame) {
+			setLocalTurnCounter();
+		} else {
+			setNetworkTurnCounter();
+		}
 	}
 	
+	private void setNetworkTurnCounter() {
+		if(gameCounter % 2 == 0 &&
+				whitePlayer.getClass().getSimpleName().equals("LocalPlayer")) {
+			ClientWindow.setTurnLabelText("Your turn.");
+		} else if(gameCounter % 2 == 0 &&
+				blackPlayer.getClass().getSimpleName().equals("LocalPlayer")) {
+			ClientWindow.setTurnLabelText("Your turn.");
+		} else {
+			ClientWindow.setTurnLabelText("Opponent's turn.");
+		}
+	}
+
+	private void setLocalTurnCounter() {
+		if(gameCounter % 2 == 0) {
+			ClientWindow.setTurnLabelText("White's turn.");
+		} else {
+			ClientWindow.setTurnLabelText("Black's turn.");
+		}
+	}
+
 	public int getGameCounter() {
 		return gameCounter;
 	}
@@ -73,7 +106,7 @@ public class Game {
 	}
 	
 	/**
-	 *
+	 * Gets player that has the specified color.
 	 * @param color
 	 * @return The player that is the color given. If the color given is NONE, null is returned.
 	 */
