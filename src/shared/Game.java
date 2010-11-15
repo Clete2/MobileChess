@@ -15,7 +15,6 @@ public class Game {
 	public Game() {
 		localGame = true;
 		setupLocalGame();
-		ClientWindow.setTurnNumberLabelText("Turn: 1");
 	}
 	
 	public Game(byte[] ip, short port) {
@@ -29,6 +28,8 @@ public class Game {
 		blackPlayer = new LocalPlayer(PieceColor.BLACK);
 		theBoard = new Board();
 		gameCounter = 0;
+		ClientWindow.setTurnNumberLabelText("Turn: 0");
+		ClientWindow.setTurnLabelText("White's turn.");
 	}
 	
 	private void setupNetworkGame(byte[] ip, short port) {
