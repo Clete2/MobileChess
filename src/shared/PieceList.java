@@ -76,7 +76,7 @@ public class PieceList {
 	 * Updates the GUI to represent a recent piece move.
 	 * @param oldIndex Old location of piece.
 	 * @param newIndex New location of piece.
-	 * @param pieceToUpdate Pice to move.
+	 * @param pieceToUpdate Piece to move.
 	 */
 	private void updatePiece(short oldIndex,
 			short newIndex, Piece pieceToUpdate) {
